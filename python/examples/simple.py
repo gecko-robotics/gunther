@@ -8,15 +8,16 @@ import sys
 from colorama import Fore
 
 def func(d):
-    for k,v in d.items():
-        print(f"{Fore.BLUE}{k}:{Fore.RESET} {v}", end=" ")
-    print(" ")
+    # for k,v in d.items():
+    #     print(f"{Fore.BLUE}{k}:{Fore.RESET} {v}", end=" ")
+    # print(" ")
+    print(d)
 
 
 if len(sys.argv) != 2 or sys.argv[1] not in ['b','l','s']:
     print("apple.py b|l")
 
-b = Beacon(handler=Json, family=AF_INET)
+b = Beacon(handler=Ascii, family=AF_INET)
 
 try:
     if sys.argv[1] == 'l':

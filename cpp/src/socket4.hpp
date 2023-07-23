@@ -94,6 +94,11 @@ class Socket4 {
     return num;
   }
 
+  int send(const message_t& msg, int flags=0) {
+    inetaddr_t addr = inet_sockaddr(group.addr, group.port);
+    return sendto(msg, addr, flags);
+  }
+
   const std::string mcast_addr{"224.0.0.251"};
   const uint16_t mcast_port{5353};
 

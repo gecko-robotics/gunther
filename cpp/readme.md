@@ -1,4 +1,4 @@
-![]()
+![](https://raw.githubusercontent.com/gecko-robotics/gunther/main/docs/gunther.png)
 
 # Gunther
 

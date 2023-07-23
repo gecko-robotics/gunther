@@ -1,0 +1,8 @@
+*.pyc
+*.egg-info
+build
+dist
+old
+poetry.lock
+__pycache__
+.pytest_cache

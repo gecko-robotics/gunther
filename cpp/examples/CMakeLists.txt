@@ -1,6 +1,7 @@
 
 LIST(APPEND APPS
     simple
+    dev
 )
 
 foreach(MAIN ${APPS})

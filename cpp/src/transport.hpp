@@ -14,7 +14,7 @@ using dict = std::map<std::string,std::string>;
 static
 std::ostream& operator<<(std::ostream&s, const dict& d) {
   for (const auto& [key, value] : d) {
-    s << key << " -> " << value << std::endl;
+    s << key << ": " << value << std::endl;
   }
   return s;
 }
@@ -23,13 +23,15 @@ class Ascii {
   public:
   message_t encode(const std::string& msg) {
     message_t ret;
-    for (const char& c: msg) ret.push_back((uint8_t) c);
+    memcpy(ret.data(), msg.data(), msg.size());
+    // for (const char& c: msg) ret.push_back((uint8_t) c);
     // return std::move(ret);
     return ret;
   }
   std::string decode(const message_t& msg) {
     std::string ret;
-    for (const uint8_t& c: msg) ret.push_back((char) c);
+    memcpy(ret.data(), msg.data(), msg.size());
+    // for (const uint8_t& c: msg) ret.push_back((char) c);
     // return std::move(ret);
     return ret;
   }

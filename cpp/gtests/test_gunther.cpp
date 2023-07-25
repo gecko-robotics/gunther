@@ -37,7 +37,7 @@ TEST(gunther, json) {
     EXPECT_TRUE(d == dd);
   }
   catch (...) {
-    EXPECT_TRUE(false);
+    EXPECT_TRUE(false); // some other error
   }
 }
 
@@ -71,6 +71,6 @@ TEST(gunther, json_fail) {
     EXPECT_FALSE(d == dd);
   }
   catch (...) {
-    EXPECT_TRUE(false);
+    EXPECT_TRUE(false); // some other error
   }
 }

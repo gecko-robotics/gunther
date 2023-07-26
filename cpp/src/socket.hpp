@@ -14,9 +14,12 @@
 #include <ostream>
 #include <regex>
 #include <sys/un.h>     // UDS
+#include <stdexcept>
 
 
 // extern int errno; // don't like this global value
+
+// Globals new types --------------------------------------------
 constexpr int SOCKET_ERR = -1;
 constexpr int SOCKET_TIMEOUT = -1;
 constexpr int SOCKET_OK = 0;
@@ -34,6 +37,7 @@ using socket_fd_t = int; // socket descriptor
 
 using message_t = std::vector<uint8_t>;
 
+// Streams --------------------------------------------------------------
 static
 std::ostream& operator<<(std::ostream& s, const message_t& m) {
   for (size_t i=0; i<m.size(); ++i) s << (char)m[i];
@@ -51,23 +55,25 @@ message_t transform(const std::string& msg) {
 }
 
 static
-const inetaddr_t& inet_sockaddr(const std::string &addr, uint16_t port) {
+const inetaddr_t inet_sockaddr(const std::string &addr, uint16_t port) {
   inetaddr_t inet = {0};
   inet.sin_family      = AF_INET;
   inet.sin_addr.s_addr = inet_addr(addr.c_str());
   inet.sin_port        = htons(port);
-  return std::move(inet);
+  // return std::move(inet);
+  return inet;
 }
 
 inline
-const inetaddr_t& inet_sockaddr(const group_t grp) {
+const inetaddr_t inet_sockaddr(const group_t grp) {
   return inet_sockaddr(grp.addr, grp.port);
 }
 
 static
-const inetaddr_t& inet6_sockaddr(const std::string &addr, uint16_t port) {
+const inetaddr_t inet6_sockaddr(const std::string &addr, uint16_t port) {
   inetaddr_t inet = {0};
-  return std::move(inet);
+  // return std::move(inet);
+  return inet;
 }
 
 static
@@ -118,8 +124,9 @@ const inetaddr_t filter(const std::string& address) {
   ans.sin_family = AF_ERROR;
 
   if (m.size() != 3) return ans;
-  if (m[1] == "tcp") return ans; // not handling tcp right now
+  if (m[1] == "tcp") throw std::invalid_argument("not handling tcp right now");
   if (m[1] != "udp") return ans;
+  // std::cerr << m[1] << m.size() << std::endl;
 
   uint16_t port;
   uint32_t ip;
@@ -164,12 +171,14 @@ const unixaddr_t filter(const std::string& address) {
   // return std::move(ans);
 }
 
-const inetaddr_t& inet_sockaddr(const std::string &path) {
-  return std::move(filter<inetaddr_t>(path));
+const inetaddr_t inet_sockaddr(const std::string &path) {
+  // return std::move(filter<inetaddr_t>(path));
+  return filter<inetaddr_t>(path);
 }
 
-const unixaddr_t& unix_sockaddr(const std::string &path) {
-  return std::move(filter<unixaddr_t>(path));
+const unixaddr_t unix_sockaddr(const std::string &path) {
+  // return std::move(filter<unixaddr_t>(path));
+  return filter<unixaddr_t>(path);
 }
 
 #endif // geko_socket_hpp

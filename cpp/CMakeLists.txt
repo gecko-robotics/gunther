@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25.0)
+cmake_minimum_required(VERSION 3.22.0)
 project(gunther VERSION 2023.07.21.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)

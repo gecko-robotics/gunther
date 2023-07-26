@@ -23,15 +23,15 @@ class Ascii {
   public:
   message_t encode(const std::string& msg) {
     message_t ret;
-    memcpy(ret.data(), msg.data(), msg.size());
-    // for (const char& c: msg) ret.push_back((uint8_t) c);
+    // memcpy(ret.data(), msg.data(), msg.size()); // segfault linux
+    for (const char& c: msg) ret.push_back((uint8_t) c);
     // return std::move(ret);
     return ret;
   }
   std::string decode(const message_t& msg) {
     std::string ret;
-    memcpy(ret.data(), msg.data(), msg.size());
-    // for (const uint8_t& c: msg) ret.push_back((char) c);
+    // memcpy(ret.data(), msg.data(), msg.size()); // sefault linux
+    for (const uint8_t& c: msg) ret.push_back((char) c);
     // return std::move(ret);
     return ret;
   }

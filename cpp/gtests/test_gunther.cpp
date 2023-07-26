@@ -6,19 +6,24 @@
 
 using namespace std;
 
+TEST(gunther, debug) {
+  EXPECT_TRUE(1);
+}
 
 TEST(gunther, ascii) {
-  try {
+  // try {
     Ascii a;
     string s{"hello|9|1234|1.2.3.4"};
     message_t m = a.encode(s);
     string ss = a.decode(m);
 
+    // cout << s << " => " << ss << endl;
+
     EXPECT_TRUE(ss == s);
-  }
-  catch (...) {
-    EXPECT_TRUE(false);
-  }
+  // }
+  // catch (...) {
+  //   EXPECT_TRUE(false);
+  // }
 }
 
 TEST(gunther, json) {
@@ -32,7 +37,7 @@ TEST(gunther, json) {
     message_t m = j.encode(d);
 
     dict dd = j.decode(m);
-    cout << dd << endl;
+    // cout << dd << endl;
 
     EXPECT_TRUE(d == dd);
   }
@@ -73,4 +78,24 @@ TEST(gunther, json_fail) {
   catch (...) {
     EXPECT_TRUE(false); // some other error
   }
+}
+
+TEST(gunther, unix) {
+  string path = "unix://path/to/file.udp";
+  unixaddr_t u = unix_sockaddr(path);
+  string s = unix2string(u);
+  // cout << path << " " << s << endl;
+  EXPECT_TRUE(path == ("unix://" + s));
+}
+
+TEST(gunther, inet) {
+  string path = "udp://1.2.3.4:12345";
+  inetaddr_t i = inet_sockaddr(path);
+  string s = inet2string(i);
+  EXPECT_TRUE(path == "udp://" + s);
+
+  // path = "tcp://1.2.3.4:1234";
+  // i = inet_sockaddr(path);
+  // s = inet2string(i);
+  // EXPECT_FALSE(path == s);
 }

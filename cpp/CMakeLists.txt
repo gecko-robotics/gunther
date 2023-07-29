@@ -29,9 +29,28 @@ else()
     set(BUILD_GTESTS OFF)
 endif()
 
+include(FetchContent)
+
+# socket -----------------
+FetchContent_Declare(
+  socket
+  GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
+  GIT_TAG "origin/main"
+#   SOURCE_DIR "${CMAKE_BINARY_DIR}/socket"
+)
+
+
+FetchContent_MakeAvailable( socket )
+
+message(STATUS ">> ${socket_SOURCE_DIR}")
+
 # Library =====================================================================
 add_library(${PROJECT_NAME} INTERFACE)
-target_include_directories(${PROJECT_NAME} INTERFACE src/)
+target_include_directories(${PROJECT_NAME} INTERFACE
+    src/
+    ${socket_SOURCE_DIR}/src
+)
+# target_link_libraries(${PROJECT_NAME} socket)
 
 # Examples ====================
 message(STATUS "Building ${PROJECT_NAME} examples is ${BUILD_EXAMPLES}")

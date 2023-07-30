@@ -48,11 +48,11 @@ message(STATUS ">> ${socket_SOURCE_DIR}")
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE
     src/
-    ${socket_SOURCE_DIR}/src
+    # ${socket_SOURCE_DIR}/src
     $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/src>
     # $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-# target_link_libraries(${PROJECT_NAME} socket)
+target_link_libraries(${PROJECT_NAME} INTERFACE socket)
 
 # Examples ====================
 message(STATUS "Building ${PROJECT_NAME} examples is ${BUILD_EXAMPLES}")

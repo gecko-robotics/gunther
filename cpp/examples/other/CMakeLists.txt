@@ -33,27 +33,13 @@ include(FetchContent)
 
 # gunter -----------------
 FetchContent_Declare(
-    socket
-#   GIT_REPOSITORY "https://github.com/gecko-robotics/gunther.git"
-  GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
-  GIT_TAG "origin/main"
-)
-FetchContent_Declare(
     gunther
-  GIT_REPOSITORY "https://github.com/gecko-robotics/gunther.git"
-#   GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
-  GIT_TAG "origin/main"
+    GIT_REPOSITORY "https://github.com/gecko-robotics/gunther.git"
+    GIT_TAG "origin/main"
+    SOURCE_SUBDIR "cpp"
 )
 
-FetchContent_MakeAvailable( gunther socket )
-
-message(STATUS ">> src: ${socket_SOURCE_DIR}")
-message(STATUS ">> bin: ${socket_BINARY_DIR}")
-message(STATUS ">> populated: ${socket_POPULATED}")
-message(STATUS "--------------------------------------")
-message(STATUS ">> src: ${gunther_SOURCE_DIR}")
-message(STATUS ">> bin: ${gunther_BINARY_DIR}")
-message(STATUS ">> populated: ${gunther_POPULATED}")
+FetchContent_MakeAvailable( gunther )
 
 LIST(APPEND APPS
     main
@@ -61,11 +47,5 @@ LIST(APPEND APPS
 
 foreach(MAIN ${APPS})
     add_executable(${MAIN} ${MAIN}.cpp)
-    # target_include_directories(${MAIN}
-    #     INTERFACE
-    #         ${gunther_SOURCE_DIR}/src
-    #         ${gunther_BINARY_DIR}
-    # )
-    target_link_libraries(${MAIN} PRIVATE gunther socket)
-    # target_link_libraries(${MAIN} PRIVATE socket)
+    target_link_libraries(${MAIN} PRIVATE gunther)
 endforeach()

@@ -66,6 +66,6 @@ foreach(MAIN ${APPS})
     #         ${gunther_SOURCE_DIR}/src
     #         ${gunther_BINARY_DIR}
     # )
-    # target_link_libraries(${MAIN} PRIVATE gunther socket)
-    target_link_libraries(${MAIN} PRIVATE socket)
+    target_link_libraries(${MAIN} PRIVATE gunther socket)
+    # target_link_libraries(${MAIN} PRIVATE socket)
 endforeach()

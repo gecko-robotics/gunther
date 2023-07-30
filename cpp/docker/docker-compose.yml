@@ -9,8 +9,10 @@ services:
     # image: octoprint/octoprint
     # container_name: octoprint
     # restart: unless-stopped
-    ports:
-      - 5000:5000
+    # ports:
+    #   - 5000:5000
+    volumes:
+      - ./tmp:/src
     # devices:
     #   - /dev/ttyACM0:/dev/ttyACM0
     # #  - /dev/video0:/dev/video0

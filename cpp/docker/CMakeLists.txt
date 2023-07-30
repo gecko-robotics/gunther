@@ -25,23 +25,35 @@ if(PROJECT_IS_TOP_LEVEL)
     # set(BUILD_TESTS ON)
 else()
     message(STATUS "-> ${PROJECT_NAME} is submodule")
-    set(BUILD_EXAMPLES OFF)
-    set(BUILD_GTESTS OFF)
+    # set(BUILD_EXAMPLES OFF)
+    # set(BUILD_GTESTS OFF)
 endif()
 
 include(FetchContent)
 
 # gunter -----------------
 FetchContent_Declare(
-    gunter
+    socket
+#   GIT_REPOSITORY "https://github.com/gecko-robotics/gunther.git"
+  GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
+  GIT_TAG "origin/main"
+)
+FetchContent_Declare(
+    gunther
   GIT_REPOSITORY "https://github.com/gecko-robotics/gunther.git"
 #   GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
   GIT_TAG "origin/main"
 )
 
-FetchContent_MakeAvailable( gunter )
+FetchContent_MakeAvailable( gunther socket )
 
-# message(STATUS ">> ${gunther_SOURCE_DIR}")
+message(STATUS ">> src: ${socket_SOURCE_DIR}")
+message(STATUS ">> bin: ${socket_BINARY_DIR}")
+message(STATUS ">> populated: ${socket_POPULATED}")
+message(STATUS "--------------------------------------")
+message(STATUS ">> src: ${gunther_SOURCE_DIR}")
+message(STATUS ">> bin: ${gunther_BINARY_DIR}")
+message(STATUS ">> populated: ${gunther_POPULATED}")
 
 LIST(APPEND APPS
     main
@@ -49,5 +61,10 @@ LIST(APPEND APPS
 
 foreach(MAIN ${APPS})
     add_executable(${MAIN} ${MAIN}.cpp)
-    target_link_libraries(${MAIN} PRIVATE gunter)
+    # target_include_directories(${MAIN}
+    #     INTERFACE
+    #         ${gunther_SOURCE_DIR}/src
+    #         ${gunther_BINARY_DIR}
+    # )
+    target_link_libraries(${MAIN} PRIVATE gunther socket)
 endforeach()

@@ -11,8 +11,8 @@ services:
     # restart: unless-stopped
     # ports:
     #   - 5000:5000
-    volumes:
-      - ./tmp:/src
+    # volumes:
+    #   - ./tmp:/src
     # devices:
     #   - /dev/ttyACM0:/dev/ttyACM0
     # #  - /dev/video0:/dev/video0

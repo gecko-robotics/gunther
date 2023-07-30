@@ -23,7 +23,7 @@ SOFTWARE.
 */
 #pragma once
 
-#include "socket.hpp"
+#include <socket.hpp>
 #include <unistd.h> // close
 
 
@@ -45,28 +45,28 @@ class Socket4 {
     int err = ::bind(socket_fd, (const sockaddr_t *)&addr, sizeof(addr));
     guard(err);
 
-    // mreq = struct.pack("=4sl", inet_aton(self.mcast_addr), INADDR_ANY);
-    struct ip_mreq mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(group.addr.c_str()); // Multicast IP
-    mreq.imr_interface.s_addr = htonl(INADDR_ANY);// any interface
-    // setsockopt(IPPROTO_IP, IP_ADD_MEMBERSHIP, mreq);
-    err = ::setsockopt(socket_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
-    guard(err);
+    membership(true); // add membership
 
     bound = true;
   }
 
   void close() {
-    if (bound) {
-      // mreq = struct.pack("=4sl", inet_aton(self.mcast_addr), INADDR_ANY)
-      // setsockopt(SOL_IP, IP_DROP_MEMBERSHIP, mreq);
-      struct ip_mreq mreq;
-      mreq.imr_multiaddr.s_addr = inet_addr(group.addr.c_str()); // Multicast IP
-      mreq.imr_interface.s_addr = htonl(INADDR_ANY);// any interface
-      // setsockopt(IPPROTO_IP, IP_ADD_MEMBERSHIP, mreq);
-      ::setsockopt(socket_fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, &mreq, sizeof(mreq));
-    }
+    if (bound) membership(false); // drop membership
     ::close(socket_fd);
+  }
+
+  void membership(bool join) {
+    int val; // linux/in.h defines this
+    if (join) val = IP_ADD_MEMBERSHIP; // 35
+    else val = IP_DROP_MEMBERSHIP; // 36
+
+    // mreq = struct.pack("=4sl", inet_aton(self.mcast_addr), INADDR_ANY);
+    struct ip_mreq mreq;
+    mreq.imr_multiaddr.s_addr = inet_addr(group.addr.c_str()); // Multicast IP
+    mreq.imr_interface.s_addr = htonl(INADDR_ANY);// any interface
+
+    int err = ::setsockopt(socket_fd, IPPROTO_IP, val, &mreq, sizeof(mreq));
+    if (join) guard(err);
   }
 
   void setsockopt(int level, int name, int val) {
@@ -95,7 +95,8 @@ class Socket4 {
     // timeout gives -1, so set size=0
     if (num == SOCKET_TIMEOUT || num == 0) dst.clear();
 
-    return std::move(dst);
+    // return std::move(dst);
+    return dst;
   }
 
   message_t recv(size_t msg_size, const int flags=0) {

@@ -38,23 +38,17 @@ inline void msleep(int msec) {
 template<typename T>
 class Beacon {
   public:
+  typedef std::function<void(T &)> callback_t;
+
   Beacon(group_t grp, uint8_t ttl=1, int loopback=1): sock(T(grp, ttl, loopback)) {}
 
-  void broadcast(std::vector<message_t>& msgs, size_t delay=1000) {
-    while (true) {
-      for (const message_t& m: msgs) {
-        sock.send(m);
-      }
-
-      msleep(delay);
-    }
-  }
-
-  void listen() {}
-
-  void stream() {}
+  inline
+  void loop(const callback_t& cb) { while (true) cb(sock); }
+  inline
+  void once(const callback_t& cb) { cb(sock); }
+  inline
+  void bind() { sock.bind(); }
 
   protected:
-  Ascii handler;
   T sock;
 };

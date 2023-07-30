@@ -36,9 +36,7 @@ FetchContent_Declare(
   socket
   GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
   GIT_TAG "origin/main"
-#   SOURCE_DIR "${CMAKE_BINARY_DIR}/socket"
 )
-
 
 FetchContent_MakeAvailable( socket )
 

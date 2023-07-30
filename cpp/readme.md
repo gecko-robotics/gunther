@@ -1,8 +1,30 @@
 ![](https://raw.githubusercontent.com/gecko-robotics/gunther/main/docs/gunther.png)
 
-# Gunther
+# Gunther C++
 
 A multicast beacon
+
+## cmake
+
+You can use `cmake`'s `FetchContent` to download the library and
+add it to your program like this:
+
+```cmake
+include(FetchContent)
+
+# gunter -----------------
+FetchContent_Declare(
+    gunther
+    GIT_REPOSITORY "https://github.com/gecko-robotics/gunther.git"
+    GIT_TAG "origin/main"
+    SOURCE_SUBDIR "cpp"
+)
+
+FetchContent_MakeAvailable( gunther )
+
+add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE gunther)
+```
 
 # MIT License
 

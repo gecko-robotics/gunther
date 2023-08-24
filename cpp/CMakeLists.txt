@@ -29,6 +29,8 @@ else()
     set(BUILD_GTESTS OFF)
 endif()
 
+set(DOWNLOAD_EXTRACT_TIMESTAMP 0) # avoid strange warning
+
 include(FetchContent)
 
 # socket -----------------
@@ -37,6 +39,18 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
   GIT_TAG "origin/main"
 )
+
+if (BUILD_TESTS)
+    FetchContent_Declare(
+        googletest
+    #   GIT_REPOSITORY "https://github.com/google/googletest"
+    #   GIT_TAG "origin/main"
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+    )
+    list(APPEND libs googletest)
+endif()
+
+list(APPEND libs socket)
 
 FetchContent_MakeAvailable( socket )
 

@@ -32,7 +32,7 @@ SOFTWARE.
 #include <sys/socket.h> // socket, connect, etc ...
 
 // #include "socket.hpp"
-#include <socket.hpp>
+#include <socket_defs.hpp>
 #include "socket4.hpp"
 #include "socket6.hpp"
 #include "transport.hpp"

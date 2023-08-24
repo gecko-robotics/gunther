@@ -23,7 +23,7 @@ SOFTWARE.
 */
 #pragma once
 
-#include <socket.hpp>
+#include <socket_defs.hpp>
 #include <unistd.h> // close
 
 

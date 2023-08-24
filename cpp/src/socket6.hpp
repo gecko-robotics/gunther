@@ -23,7 +23,7 @@ SOFTWARE.
 */
 #pragma once
 
-#include <socket.hpp>
+#include <socket_defs.hpp>
 
 class Socket6 {
   public:
